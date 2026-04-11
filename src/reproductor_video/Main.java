@@ -4,6 +4,9 @@
  */
 package reproductor_video;
 
+import javafx.embed.swing.JFXPanel;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author mafer
@@ -14,8 +17,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
-        // TODO code application logic here
-    }
+    new JFXPanel();
+    SwingUtilities.invokeLater(() -> new Reproductor().setVisible(true));
+}
     
 }
