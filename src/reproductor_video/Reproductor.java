@@ -39,6 +39,7 @@ public class Reproductor extends JFrame {
         setResizable(false);
         new JFXPanel();
         initUI();
+        cargarVideosIniciales();
     }
 
     private void initUI() {
@@ -368,5 +369,37 @@ public class Reproductor extends JFrame {
         return String.format("%d:%02d", m, s);
     }
 
+    private void cargarVideosIniciales() {
+    // Obtiene la ruta de la carpeta videos relativa al proyecto
+    String base = System.getProperty("user.dir") + File.separator + "videos";
+    File carpeta = new File(base);
     
+    if (!carpeta.exists()) {
+        lblEstado.setText("Carpeta 'videos' no encontrada");
+        return;
+    }
+    
+    // Filtra solo archivos de video
+    File[] archivos = carpeta.listFiles((dir, nombre) ->
+        nombre.endsWith(".mp4") || nombre.endsWith(".avi") ||
+        nombre.endsWith(".mkv") || nombre.endsWith(".mov")
+    );
+    
+    if (archivos == null || archivos.length == 0) {
+        lblEstado.setText("No hay videos en la carpeta 'videos'");
+        return;
+    }
+    
+    // Recorre los archivos y los agrega a la lista enlazada
+    for (File f : archivos) {
+        lista.agregar(f.getAbsolutePath());
+        modeloLista.addElement(f.getName());
+    }
+    
+    // Carga el primero automáticamente
+    actual = lista.inicio;
+    listaUI.setSelectedIndex(0);
+    cargarVideo(actual.ruta);
+    lblEstado.setText(modeloLista.size() + " video(s) cargados");
+}
 }
